@@ -12,9 +12,21 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <!-- Atardecer animado en CSS: se ve si el video no carga -->
+  <div class="atardecer" aria-hidden="true"><div class="sol"></div></div>
+
+  <!-- VIDEO DE FONDO: guarda tu video en la misma carpeta con el nombre fondo.mp4 -->
+  <video class="fondo-video" autoplay muted loop playsinline aria-hidden="true" tabindex="-1">
+    <source src="fondo.mp4" type="video/mp4">
+  </video>
+
+  <div class="velo" aria-hidden="true"></div>
+
   <main class="contenedor">
 
     <header class="cabecera">
+      <p class="sello">Portafolio de diseño</p>
       <h1 class="nombre" data-texto="Danilo Calle">Danilo Calle</h1>
       <p class="rol">Estudiante de diseño gráfico. Hago identidad visual, interfaces, web, foto y video.</p>
     </header>
@@ -23,7 +35,7 @@
       <h2 id="proyectos">Proyectos</h2>
       -->
       <ul class="lista">
-        <li><a class="proyecto magenta" href="https://m22-dev.github.io/pelota-que-rebota/" target="_blank" rel="noopener">PELOTA QUE REBOTA</a></li>
+        <li><a class="proyecto magenta" href="https://m22-dev.github.io/pelota-que-rebota/" target="_blank" rel="noopener">Pelota que Rebota</a></li>
         <li><a class="proyecto cian" href="#" target="_blank" rel="noopener">Proyecto 2</a></li>
         <li><a class="proyecto amarillo" href="#" target="_blank" rel="noopener">Proyecto 3</a></li>
         <li><a class="proyecto magenta" href="#" target="_blank" rel="noopener">Proyecto 4</a></li>
@@ -43,9 +55,16 @@
     </footer>
 
   </main>
-</body>
-</html>
 
-  </main>
+  <script>
+    (function () {
+      var video = document.querySelector(".fondo-video");
+      if (!video) return;
+      // Si el video no existe o falla, se quita y queda el atardecer en CSS
+      video.querySelector("source").addEventListener("error", function () { video.remove(); });
+      // Respeta a quienes prefieren menos movimiento
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { video.pause(); }
+    })();
+  </script>
 </body>
 </html>
