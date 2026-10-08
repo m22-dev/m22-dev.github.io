@@ -1,10 +1,10 @@
-/* Paleta inspirada en la impresión CMYK */
+/* Paleta: atardecer + tintas de impresión */
 :root {
-  --papel: #eef0f6;
+  --noche: #1e0b3a;
   --tinta: #1b1b2f;
-  --texto-suave: #4a4a63;
   --cian: #00aeef;
   --magenta: #ec008c;
+  --naranja: #ff6a1a;
   --amarillo: #ffd400;
   --blanco: #ffffff;
 }
@@ -13,30 +13,102 @@
 
 body {
   margin: 0;
+  min-height: 100vh;
   font-family: "Bricolage Grotesque", system-ui, sans-serif;
-  background: var(--papel);
-  color: var(--tinta);
+  background: var(--noche);
+  color: var(--blanco);
   line-height: 1.5;
 }
 
+/* ---------- Fondo ---------- */
+.atardecer,
+.fondo-video,
+.velo {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.atardecer {
+  z-index: -4;
+  overflow: hidden;
+  background: linear-gradient(
+    to top,
+    var(--amarillo) 0%,
+    var(--naranja) 22%,
+    var(--magenta) 48%,
+    #5b1a8c 75%,
+    var(--noche) 100%
+  );
+}
+
+.sol {
+  position: absolute;
+  left: 50%;
+  bottom: 22%;
+  width: min(60vw, 22rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff3b0 0%, var(--amarillo) 55%, var(--naranja) 100%);
+  box-shadow: 0 0 6rem 2rem rgba(255, 150, 40, 0.55);
+  transform: translateX(-50%);
+  animation: ocaso 40s ease-in-out infinite alternate;
+}
+
+@keyframes ocaso {
+  from { transform: translate(-50%, 0); }
+  to   { transform: translate(-50%, 45%); }
+}
+
+.fondo-video {
+  z-index: -3;
+  object-fit: cover;
+}
+
+/* Capa oscura para que el texto se lea sobre el video */
+.velo {
+  z-index: -2;
+  background: linear-gradient(
+    180deg,
+    rgba(30, 11, 58, 0.6) 0%,
+    rgba(30, 11, 58, 0.25) 45%,
+    rgba(30, 11, 58, 0.65) 100%
+  );
+}
+
+/* ---------- Contenido ---------- */
 .contenedor {
-  max-width: 30rem;
+  position: relative;
+  max-width: 32rem;
   margin: 0 auto;
   padding: 3.5rem 1.25rem 3rem;
 }
 
-/* ---------- Cabecera ---------- */
-.cabecera { margin-bottom: 1rem; }
+.cabecera { margin-bottom: 1.5rem; }
 
-/* El nombre aparece "desalineado" como una impresión mal registrada
-   y se acomoda al cargar la página. */
+.sello {
+  display: inline-block;
+  margin: 0 0 1.5rem;
+  padding: 0.3rem 0.9rem;
+  background: var(--amarillo);
+  color: var(--tinta);
+  font-weight: 800;
+  border: 2px solid var(--tinta);
+  box-shadow: 4px 4px 0 var(--magenta);
+  transform: rotate(-4deg);
+}
+
+/* Nombre con efecto de impresión mal registrada que se acomoda al cargar */
 .nombre {
   position: relative;
+  isolation: isolate;
   margin: 0;
-  font-size: clamp(3rem, 16vw, 4.75rem);
-  line-height: 0.95;
+  font-size: clamp(3.5rem, 19vw, 6rem);
+  line-height: 0.92;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
+  text-shadow: 0 4px 30px rgba(30, 11, 58, 0.45);
 }
 
 .nombre::before,
@@ -44,84 +116,90 @@ body {
   content: attr(data-texto);
   position: absolute;
   inset: 0;
-  mix-blend-mode: multiply;
+  z-index: -1;
+  mix-blend-mode: screen;
+  text-shadow: none;
   pointer-events: none;
 }
 
 .nombre::before {
   color: var(--cian);
-  transform: translate(-3px, 2px);
-  animation: registro-cian 1.4s ease-out;
+  transform: translate(-4px, 3px);
+  animation: registro-cian 1.6s ease-out;
 }
 
 .nombre::after {
   color: var(--magenta);
-  transform: translate(3px, -2px);
-  animation: registro-magenta 1.4s ease-out;
+  transform: translate(4px, -3px);
+  animation: registro-magenta 1.6s ease-out;
 }
 
 @keyframes registro-cian {
-  from { transform: translate(-16px, 10px); }
-  to   { transform: translate(-3px, 2px); }
+  from { transform: translate(-26px, 16px); }
+  to   { transform: translate(-4px, 3px); }
 }
 
 @keyframes registro-magenta {
-  from { transform: translate(16px, -10px); }
-  to   { transform: translate(3px, -2px); }
+  from { transform: translate(26px, -16px); }
+  to   { transform: translate(4px, -3px); }
 }
 
 .rol {
-  margin: 1.25rem 0 0;
+  margin: 1.5rem 0 0;
   max-width: 28rem;
-  font-size: 1.0625rem;
-  color: var(--texto-suave);
+  font-size: 1.125rem;
+  text-shadow: 0 1px 14px rgba(30, 11, 58, 0.8);
 }
 
-/* ---------- Secciones ---------- */
 h2 {
-  margin: 2.25rem 0 0.75rem;
-  font-size: 1.25rem;
-  font-weight: 700;
+  margin: 2.25rem 0 1rem;
+  font-size: 1.5rem;
+  font-weight: 800;
   letter-spacing: -0.01em;
+  text-shadow: 0 1px 14px rgba(30, 11, 58, 0.8);
 }
 
+/* ---------- Lista de proyectos ---------- */
 .lista {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 1rem;
+  gap: 1.125rem;
 }
 
-/* ---------- Lista de proyectos ---------- */
 .cian     { --color: var(--cian); }
 .magenta  { --color: var(--magenta); }
 .amarillo { --color: var(--amarillo); }
 
 .proyecto {
   display: block;
-  padding: 1rem 1.125rem;
+  padding: 1.1rem 1.25rem;
   background: var(--blanco);
   color: var(--tinta);
-  font-size: 1.0625rem;
-  font-weight: 700;
+  font-size: 1.1875rem;
+  font-weight: 800;
   line-height: 1.2;
   text-decoration: none;
   border: 2px solid var(--tinta);
   border-radius: 0.5rem;
-  box-shadow: 5px 5px 0 var(--color);
+  box-shadow: 6px 6px 0 var(--color);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.proyecto:hover,
-.proyecto:focus-visible {
-  transform: translate(3px, 3px);
+/* Cada tarjeta ligeramente inclinada, como piezas pegadas a mano */
+.lista li:nth-child(odd)  .proyecto { transform: rotate(-1deg); }
+.lista li:nth-child(even) .proyecto { transform: rotate(1deg); }
+
+.lista li .proyecto:hover,
+.lista li .proyecto:focus-visible {
+  transform: translate(3px, 3px) rotate(0deg);
   box-shadow: 2px 2px 0 var(--color);
 }
 
 .proyecto:focus-visible {
-  outline: 3px solid var(--tinta);
-  outline-offset: 3px;
+  outline: 3px solid var(--blanco);
+  outline-offset: 4px;
 }
 
 /* ---------- Pie ---------- */
@@ -134,18 +212,19 @@ h2 {
 }
 
 .redes a {
-  color: var(--tinta);
+  color: var(--blanco);
   font-weight: 700;
   text-decoration: underline;
   text-decoration-thickness: 3px;
-  text-decoration-color: var(--magenta);
+  text-decoration-color: var(--amarillo);
   text-underline-offset: 4px;
+  text-shadow: 0 1px 10px rgba(30, 11, 58, 0.8);
 }
 
 .redes a:hover { text-decoration-color: var(--cian); }
 
 .redes a:focus-visible {
-  outline: 3px solid var(--tinta);
+  outline: 3px solid var(--blanco);
   outline-offset: 3px;
 }
 
@@ -161,6 +240,7 @@ h2 {
 
 /* ---------- Accesibilidad ---------- */
 @media (prefers-reduced-motion: reduce) {
+  .sol,
   .nombre::before,
   .nombre::after { animation: none; }
   .proyecto { transition: none; }
