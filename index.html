@@ -62,7 +62,7 @@
       if (!video) return;
       // Si el video no existe o falla, se quita y queda el atardecer en CSS
       video.querySelector("source").addEventListener("error", function () { video.remove(); });
-      // Respeta a quienes prefieren menos movimiento
+  
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { video.pause(); }
     })();
   </script>
